@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import ButtonElem from './UI/ButtonElem.vue';
 import { usePostStore } from '@/stores/postStore';
+import CommentsList from './CommentsList.vue'
 
 const props = defineProps({
     info: Object,
@@ -9,6 +10,7 @@ const props = defineProps({
 
 let displayComments = ref('false')
 let commentsBtn = ref('Комментарии')
+let InputComment = ref('')
 
 function deleteHandle(id) {
     usePostStore().deletePost(id)
@@ -24,6 +26,11 @@ function showComments() {
     }
 }
 
+
+function addCommHandle(id, value) {
+    usePostStore().addComment(id, value)
+}
+
 </script>
 
 <template>
@@ -35,17 +42,19 @@ function showComments() {
                 <button class="justBtn" @click="showComments">{{ commentsBtn }}</button>
                 <p>Кол-во комментариев: {{ info.comments.length }}</p>
                 <button class="justBtn">Изменить</button>
-                <button class="justBtn deletBtn" @click="deleteHandle(info.id)">Удалить</button>
+                <button class="justBtn deleteBtn" @click="deleteHandle(info.id)">Удалить</button>
             </div>
         </div>
         <div v-else>
             <div class="post-item-comments">
                 <div class="add-comment">
-                    <input type="text" id="add-comment" placeholder="Новый пост">
-                    <ButtonElem title="Добавить" :funcAction="addHandle" />
+                    <input type="text" id="add-comment" placeholder="Новый пост" v-model="InputComment">
+                    <!-- <ButtonElem title="Добавить" :funcAction="addCommHandle" /> -->
+                    <button class="justBtn" @click="addCommHandle(info.id, InputComment)">Добавить</button>
                 </div>
 
                 <!-- Лист с комментариями, в котором будет commentItem (с комментарием и с кнопкой удаления)  -->
+                <CommentsList :info="info"/>
 
                 <button class="justBtn" @click="showComments">{{ commentsBtn }}</button>
             </div>
@@ -89,7 +98,7 @@ function showComments() {
 }
 
 
-.deletBtn {
+.deleteBtn {
     background-color: #FF218B;
 }
 </style>

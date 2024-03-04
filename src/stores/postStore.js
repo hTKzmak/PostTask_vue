@@ -28,18 +28,18 @@ export const usePostStore = defineStore('post', () => {
 
 
 
+
   // Добавление поста
   const addPost = (value) => {
-    if(value !== ''){
+    if (value !== '') {
       let new_post = {
         id: Date.now(),
         title: value,
         comments: []
       }
-      
+
       postData.value.push(new_post)
     }
-
   }
 
 
@@ -52,5 +52,29 @@ export const usePostStore = defineStore('post', () => {
   }
 
 
-  return { postData, addPost, deletePost }
+  // Добавление комментария
+  const addComment = (id, value) => {
+
+    const post = postData.value.find(post => post.id === id);
+
+    if (post && value !== '') {
+
+      let new_comment = {
+        id: Date.now(),
+        text: value
+      }
+
+      post.comments.push(new_comment);
+    }
+  }
+
+
+  // удаление комментария
+  const deleteComment = (postId, commentId) => {
+    const post = postData.value.find(post => post.id === postId);
+    
+  }
+
+
+  return { postData, addPost, deletePost, addComment, deleteComment }
 })
