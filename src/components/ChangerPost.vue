@@ -1,17 +1,31 @@
 <script setup>
 import { usePostStore } from '@/stores/postStore';
+import { ref, watch } from 'vue';
 
 let showChanger = usePostStore().showChanger
-console.log('res:', showChanger)
+let textValue = ref('')
+
+// textValue будет автоматически обновляться при изменении id в showChanger
+// нужен для отображения текста в textarea (так как используется v-model, то используется данный код для изменения значения в textarea)
+watch(() => showChanger.id, (newId) => {
+    const post = usePostStore().postData.find(post => post.id === newId)
+    if (post) {
+        textValue.value = post.title
+    }
+})
+
+function changerHandle(value){
+    usePostStore().changePostValue(value)
+}
 
 </script>
 
 <template>
     <div :class="showChanger.value ? 'change-post showChanger' : 'change-post hideChanger'">
         <div class="changer-item">
-            <textarea name="" id="" cols="30" rows="10">{{ showChanger.title }}</textarea>
+            <textarea id="textArea" cols="30" rows="10" v-model="textValue">{{ showChanger.title }}</textarea>
             <div class="changer-buttons">
-                <button class="justBtn">Подтвердить</button>
+                <button class="justBtn" @click="changerHandle(textValue)">Подтвердить</button>
                 <button class="justBtn exitBtn" @click="showChanger.value = false">Закрыть</button>
             </div>
         </div>
@@ -39,7 +53,6 @@ console.log('res:', showChanger)
     opacity: 1;
     pointer-events: all;
     z-index: 1;
-    padding: 50px;
 }
 
 .changer-item {

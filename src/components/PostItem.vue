@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, defineProps } from 'vue'
+import { reactive, ref, defineProps, watch } from 'vue'
 import ButtonElem from './UI/ButtonElem.vue';
 import { usePostStore } from '@/stores/postStore';
 import CommentsList from './CommentsList.vue'
@@ -11,6 +11,7 @@ const props = defineProps({
 let displayComments = ref('false')
 let commentsBtn = ref('Комментарии')
 let InputComment = ref('')
+let showChanger = usePostStore().showChanger
 
 
 function deleteHandle(id) {
@@ -32,11 +33,18 @@ function addCommHandle(id, value) {
     usePostStore().addComment(id, value)
 }
 
-function changeHandle(id, title){
-    usePostStore().changePostValue(id, title)
+function getInfoHandle(id, title){
+    usePostStore().getPostInfo(id, title)
 }
 
-
+// title будет изменяться после внесения изменений в showChanger.title
+// нужен для изменения title после изменений в ChangerPost.vue
+watch(() => showChanger.title, (newTitle) => {
+    const post = props.info;
+    if (post.id === showChanger.id) {
+        post.title = newTitle
+    }
+});
 
 </script>
 
@@ -47,7 +55,7 @@ function changeHandle(id, title){
             <div class="post-item-buttons">
                 <button class="justBtn" @click="showComments">{{ commentsBtn }}</button>
                 <p>Кол-во комментариев: {{ info.comments.length }}</p>
-                <button class="justBtn" @click="changeHandle(info.id, info.title)">Изменить</button>
+                <button class="justBtn" @click="getInfoHandle(info.id, info.title)">Изменить</button>
                 <button class="justBtn deleteBtn" @click="deleteHandle(info.id)">Удалить</button>
             </div>
         </div>
@@ -58,7 +66,6 @@ function changeHandle(id, title){
                     <button class="justBtn" @click="addCommHandle(info.id, InputComment)">Добавить</button>
                 </div>
 
-                <!-- Лист с комментариями, в котором будет commentItem (с комментарием и с кнопкой удаления)  -->
                 <CommentsList :info="info" />
 
                 <button class="justBtn" @click="showComments">{{ commentsBtn }}</button>

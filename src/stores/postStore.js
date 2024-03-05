@@ -25,13 +25,9 @@ export const usePostStore = defineStore('post', () => {
 
   let showChanger = reactive({
     value: false,
+    id: 0,
     title: ''
   })
-
-
-  // работает, если подключить стор в любой компонент
-  console.log(postData.value)
-
 
 
 
@@ -93,15 +89,20 @@ export const usePostStore = defineStore('post', () => {
 
 
 
-
-  // Можно сделать так: здесь мы пишем булевый тип для отображения, в функции мы меняем boolean, сама функция может быть в PostItem, в котором ещё может передаваться id и title 
-
-  // функция изменение поста
-  const changePostValue = (id, titleValue) => {
+  // функция получения данных поста
+  const getPostInfo = (idValue, titleValue) => {
     showChanger.value = !showChanger.value,
+    showChanger.id = idValue,
     showChanger.title = titleValue;
-    console.log(id, titleValue)
   }
 
-  return { postData, showChanger, addPost, deletePost, addComment, deleteComment, changePostValue }
+  // функция изменения поста
+  const changePostValue = (newTitle) => {
+    showChanger.title = newTitle
+    showChanger.value = false
+  }
+
+
+
+  return { postData, showChanger, addPost, deletePost, addComment, deleteComment, getPostInfo, changePostValue }
 })
