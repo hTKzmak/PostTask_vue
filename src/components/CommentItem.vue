@@ -1,11 +1,16 @@
 <script setup>
 import CommentItem from './CommentItem.vue';
 import { usePostStore } from '@/stores/postStore';
+import ButtonElem from './UI/ButtonElem.vue';
 
 const props = defineProps({
     info: Object,
     comm: Object,
 })
+
+function deleteHandle(){
+    usePostStore().deleteComment(props.info.id, props.comm.id)
+}
 
 </script>
 
@@ -14,7 +19,7 @@ const props = defineProps({
         <div class="comment">
             <p>{{ comm.text }}</p>
         </div>
-        <button class="justBtn deleteBtn" @click="usePostStore().deleteComment(info.id, comm.id)">Удалить</button>
+        <ButtonElem title="Удалить" class="deleteBtn" :funcAction="deleteHandle" />
     </div>
 </template>
 

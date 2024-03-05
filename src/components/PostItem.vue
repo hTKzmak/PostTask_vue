@@ -53,7 +53,7 @@ watch(() => showChanger.title, (newTitle) => {
         <h2>{{ info.title }}</h2>
         <div v-if="displayComments">
             <div class="post-item-buttons">
-                <button class="justBtn" @click="showComments">{{ commentsBtn }}</button>
+                <ButtonElem :title="commentsBtn" :funcAction="showComments" />
                 <p>Кол-во комментариев: {{ info.comments.length }}</p>
                 <button class="justBtn" @click="getInfoHandle(info.id, info.title)">Изменить</button>
                 <button class="justBtn deleteBtn" @click="deleteHandle(info.id)">Удалить</button>
@@ -68,7 +68,7 @@ watch(() => showChanger.title, (newTitle) => {
 
                 <CommentsList :info="info" />
 
-                <button class="justBtn" @click="showComments">{{ commentsBtn }}</button>
+                <ButtonElem :title="commentsBtn" :funcAction="showComments" />
             </div>
         </div>
     </div>
