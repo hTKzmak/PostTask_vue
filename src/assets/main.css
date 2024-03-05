@@ -14,7 +14,6 @@ body {
 }
 
 .justBtn {
-    font-family: "Montserrat", sans-serif;
 
     background-color: #216CFF;
     color: #FCFBFB;
@@ -28,6 +27,8 @@ body {
     cursor: pointer;
 }
 
-input {
+input,
+textarea,
+button {
     font-family: "Montserrat", sans-serif;
 }

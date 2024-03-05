@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 
 export const usePostStore = defineStore('post', () => {
@@ -22,6 +22,12 @@ export const usePostStore = defineStore('post', () => {
     }
 
   ])
+
+  let showChanger = reactive({
+    value: false,
+    title: ''
+  })
+
 
   // работает, если подключить стор в любой компонент
   console.log(postData.value)
@@ -80,11 +86,22 @@ export const usePostStore = defineStore('post', () => {
 
     // находим индекс определённого комментария
     const index = post.comments.findIndex(elem => elem.id == commId)
-    if(index !== -1){
+    if (index !== -1) {
       post.comments.splice(index, 1)
     }
   }
 
 
-  return { postData, addPost, deletePost, addComment, deleteComment }
+
+
+  // Можно сделать так: здесь мы пишем булевый тип для отображения, в функции мы меняем boolean, сама функция может быть в PostItem, в котором ещё может передаваться id и title 
+
+  // функция изменение поста
+  const changePostValue = (id, titleValue) => {
+    showChanger.value = !showChanger.value,
+    showChanger.title = titleValue;
+    console.log(id, titleValue)
+  }
+
+  return { postData, showChanger, addPost, deletePost, addComment, deleteComment, changePostValue }
 })

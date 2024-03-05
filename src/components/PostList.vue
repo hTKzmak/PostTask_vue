@@ -3,10 +3,7 @@ import PostItem from './PostItem.vue';
 import { usePostStore } from '@/stores/postStore';
 
 let postStore = usePostStore()
-let postData = usePostStore().postData
-
-// console.log(postData)
-
+let postData = postStore.postData
 </script>
 
 <template>

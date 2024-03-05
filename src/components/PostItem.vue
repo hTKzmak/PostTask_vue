@@ -1,16 +1,17 @@
 <script setup>
-import { ref } from 'vue'
+import { reactive, ref, defineProps } from 'vue'
 import ButtonElem from './UI/ButtonElem.vue';
 import { usePostStore } from '@/stores/postStore';
 import CommentsList from './CommentsList.vue'
 
 const props = defineProps({
-    info: Object,
+    info: Object
 })
 
 let displayComments = ref('false')
 let commentsBtn = ref('Комментарии')
 let InputComment = ref('')
+
 
 function deleteHandle(id) {
     usePostStore().deletePost(id)
@@ -31,6 +32,12 @@ function addCommHandle(id, value) {
     usePostStore().addComment(id, value)
 }
 
+function changeHandle(id, title){
+    usePostStore().changePostValue(id, title)
+}
+
+
+
 </script>
 
 <template>
@@ -38,10 +45,9 @@ function addCommHandle(id, value) {
         <h2>{{ info.title }}</h2>
         <div v-if="displayComments">
             <div class="post-item-buttons">
-                <!-- <ButtonElem title="Удалить" :funcAction="deleteHandle"/> -->
                 <button class="justBtn" @click="showComments">{{ commentsBtn }}</button>
                 <p>Кол-во комментариев: {{ info.comments.length }}</p>
-                <button class="justBtn">Изменить</button>
+                <button class="justBtn" @click="changeHandle(info.id, info.title)">Изменить</button>
                 <button class="justBtn deleteBtn" @click="deleteHandle(info.id)">Удалить</button>
             </div>
         </div>
@@ -49,12 +55,11 @@ function addCommHandle(id, value) {
             <div class="post-item-comments">
                 <div class="add-comment">
                     <input type="text" id="add-comment" placeholder="Новый пост" v-model="InputComment">
-                    <!-- <ButtonElem title="Добавить" :funcAction="addCommHandle" /> -->
                     <button class="justBtn" @click="addCommHandle(info.id, InputComment)">Добавить</button>
                 </div>
 
                 <!-- Лист с комментариями, в котором будет commentItem (с комментарием и с кнопкой удаления)  -->
-                <CommentsList :info="info"/>
+                <CommentsList :info="info" />
 
                 <button class="justBtn" @click="showComments">{{ commentsBtn }}</button>
             </div>
