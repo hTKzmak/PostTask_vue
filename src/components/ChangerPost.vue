@@ -75,7 +75,11 @@ textarea{
     border-radius: 15px;
     padding: 10px;
     font-size: 24px;
+    width: 715px;
+    height: 113px;
+    resize: none;
 }
+
 
 .exitBtn {
     background-color: #FF218B;

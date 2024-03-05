@@ -30,5 +30,12 @@ const props = defineProps({
     border: 1px solid #6E6E6E;
     font-size: 16px;
     padding: 3px 10px;
+
+    align-items: center;
+    display: flex;
+}
+
+.comment > p {
+    margin: 0;
 }
 </style>
