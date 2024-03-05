@@ -55,6 +55,7 @@ export const usePostStore = defineStore('post', () => {
   // Добавление комментария
   const addComment = (id, value) => {
 
+    // находим определённый пост
     const post = postData.value.find(post => post.id === id);
 
     if (post && value !== '') {
@@ -70,9 +71,18 @@ export const usePostStore = defineStore('post', () => {
 
 
   // удаление комментария
-  const deleteComment = (postId, commentId) => {
+  const deleteComment = (postId, commId) => {
+    // находим определённый пост
     const post = postData.value.find(post => post.id === postId);
-    
+
+    // выводит выбранный нами комментарий
+    // console.log(post.comments.find(elem => elem.id == commId))
+
+    // находим индекс определённого комментария
+    const index = post.comments.findIndex(elem => elem.id == commId)
+    if(index !== -1){
+      post.comments.splice(index, 1)
+    }
   }
 
 
